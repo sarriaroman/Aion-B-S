@@ -1,12 +1,19 @@
 {
-  "name": "aion",
-  "version": "0.5.0",
-  "scripts": {
-    "start": "./aion"
-  },
-  "dependencies": {
-    "commander": "*",
-    "node-static": "*",
-    "colors" : "*"
-  }
+	"name": "aion",
+	"version": "0.5.1",
+	"scripts": {
+		"start": "./aion"
+	},
+	"dependencies": {
+		"commander": "*",
+		"node-static": "*",
+		"colors": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sarriaroman/Aion-B-S.git"
+	},
+	"bin": {
+		"aion": "./aion"
+	}
 }
