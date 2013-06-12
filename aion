@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+/**
+* @author Roman A. Sarria
+*
+* Remember chmod u+x to run directly
+*/
+
+var program = require('commander'),
+	exec = require('child_process').exec,
+	colors = require('colors');
+
+program.version('0.0.1')
+	.option('-n, --name [name]', 'Put name to your project')
+	.option('-s, --server <n>', 'Creates an static server. Provide a port')
+	.parse(process.argv);
+
+if ( program.name) {
+	exec('git clone --depth=1 https://github.com/sarriaroman/Backbone-Boilerplate-with-RequireJS.git ' + program.name + ' && rm -rf ' + program.name + '/.git', function(error, stdout, stderr) {
+		console.info("Boilerplate created".green);
+		console.info(" ==> " + "cd ".grey + program.name.grey + " && aion -s".grey + " to run it");
+
+		process.stdin.destroy();
+	});
+} else if (program.server) {
+	var static = require('node-static');
+
+	var fileServer = new static.Server();
+
+	require('http').createServer(function(request, response) {
+		request.addListener('end', function() {
+			fileServer.serve(request, response, function(err, result) {
+				if (err) {
+					console.error( "[" + 'ERR'.red + "] Error serving " + request.url + " - " + err.message);
+
+					response.writeHead(err.status, err.headers);
+					response.end();
+				} else {
+					console.info("[" + 'OK'.green + "] Serving " + request.url);
+				}
+			});
+		}).resume();
+	}).listen(program.server, function() {
+		console.info("Server running on http://127.0.0.1:".bold + program.server.bold);
+	});
+} else {
+	program.help();
+}
